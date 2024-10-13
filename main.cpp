@@ -1,10 +1,10 @@
-//
-//  main.cpp
-//  file
-//
-//  Created by NYUAD on 06/10/2024.
-//
+/*
+ This is a program that calculates the drop
+ of an incompressible fluid that is in a laminar flow
+ click the run button to run and use it.
+ */
 
+//include essential libraries
 #include <iostream>
 #include <fstream>
 #include <math.h>
@@ -13,181 +13,176 @@
 #define PI 3.14
 using namespace std;
 int main() {
-    double density(0), height1(0), height2(0), heightDifference(0), length(0), diameter(0), volumeFlowRate(0), viscosity(0), reynoldsNumber, frictionFactor, velocity, energyLoss, pressureDrop;
+    //declare and initialize variables
+    double density(0), height1(0), height2(0), heightDifference(0), length(0),
+    diameter(0), volumeFlowRate(0), viscosity(0), reynoldsNumber, frictionFactor,
+    velocity, energyLoss, pressureDrop(0);
     char option('0'), fileLine;
     string writeFile, readFile;
+    
+    //a variable to track the actions of the user
     int flag(0);
     
     //loop until the user enters the character 4
     while(option!='4'){
-        cout<<"What do you want to do?\n";
+        //print out the menu
+        cout<<"What are you looking to do?\n";
         cout<<"1.Enter the parameters needed to calculate the pressure drop\n";
-        cout<<"2.Calculate the intermidiate values and the pressure drop\n";
+        cout<<"2.Calculate the intermediate values and the pressure drop\n";
         cout<<"3.See the previously written values in a file\n";
         cout<<"4.Exit the program\n";
         cin>>option;
         
-        //the block that runs when the user enters charcter 1
+        //the block that runs when the user enters character 1
         if(option=='1'){
-            int count(0); //a count variable to respond to the users actions
-            
-            //Accept the lowest height from the user
-            while(height1<=0){
-                if(count>0){//if the user has entered the while loop more than once
-                    cout<<"You have entered an invalid height value, try again\n";
+            while(true){
+                if(flag>1){//check if the user already entered the variables needed
+                    char answer;
+                    cout<<"You have already entered the values needed. do you want to enter another set of values? click n for no and any other key for yes\n";
+                    cin>>answer;
+                    if(answer=='n'){
+                        break;
+                    }
                 }
-                else{//if this is the first the user enters the while loop
-                    cout<<"Enter the highest height of the pipe\n";
-                }
+                
+                //Accept height one from the user
+                cout<<"Enter height one\n";
                 cin>>height1;
-                count++;//increment the count variable to track how many times the user entered
-            }
-            count=0;//this is takes count back to being 0 for the next loop to start from
-            
-            //Accept the heighst height from the user
-            while(height2<=0){
-                if(count>0){
+                while(height1<=0){//repeat until the user gives a valid height value
                     cout<<"You have entered an invalid height value, try again\n";
+                    cin>>height1;
                 }
-                else{
-                    cout<<"Enter the lowest height of the pipe\n";
-                }
+                
+                //Accept the height two from the user
+                cout<<"Enter height two\n";
                 cin>>height2;
-                count++;
-            }
-            count=0;
-            heightDifference=height2-height1;
-            
-             //Accept the density from the user
-            while(density<=0){
-                if(count>0){
-                    cout<<"You have entered an invalid density value, try again\n";
+                while(height2<=0){//repeat until the user gives a valid height value
+                    cout<<"You have entered an invalid height value, try again\n";
+                    cin>>height2;
                 }
-                else{
-                    cout<<"Enter the density of the fluid\n";
-                }
+                heightDifference=height2-height1;//calculate the height difference
+                
+                //Accept the density from the user
+                cout<<"Enter the density of the fluid\n";
                 cin>>density;
-                count++;
-            }
-            count=0;
-            
-            //Accept the length from the user
-            while(length<=0){
-                if(count>0){
-                    cout<<"You have entered an invalid length value, try again\n";
+                while(density<=0){//repeat until the user gives a valid density value
+                    cout<<"You have entered an invalid density value, try again\n";
+                    cin>>density;
                 }
-                else{
-                    cout<<"Enter the length of the pipe\n";
-                }
+                
+                //Accept the length from the user
+                cout<<"Enter the length of the pipe\n";
                 cin>>length;
-                count++;
-            }
-            count=0;
-            
-            //Accept the diameter from the user
-            while(diameter<=0){
-                if(count>0){
-                    cout<<"You have entered an invalid diameter value, try again\n";
+                while(length<=0){//repeat until the user gives a valid length value
+                    cout<<"You have entered an invalid length value, try again\n";
+                    cin>>length;
                 }
-                else{
-                    cout<<"Enter the diameter of the pipe\n";
-                }
+                
+                //Accept the diameter from the user
+                cout<<"Enter the diameter of the pipe\n";
                 cin>>diameter;
-                count++;
-            }
-            count=0;
-            
-            //Accept the volume flow rate from the user
-            while(volumeFlowRate<=0){
-                if(count>0){
-                    cout<<"You have entered an invalid volume flow rate value, try again\n";
+                while(diameter<=0){//repeat until the user gives a valid diameter value
+                    cout<<"You have entered an invalid diameter value, try again\n";
+                    cin>>diameter;
+                    
                 }
-                else{
-                    cout<<"Enter the volume flow rate\n";
-                }
+                
+                //Accept the volume flow rate from the user
+                cout<<"Enter the volume flow rate\n";
                 cin>>volumeFlowRate;
-                count++;
-            }
-            count=0;
-            
-            //Accept the viscosity from the user
-            while(viscosity<=0){
-                if(count>0){
-                    cout<<"You have entered an invalid viscosity value, try again\n";
+                while(volumeFlowRate<=0){//repeat until the user gives a valid volume flow rate value
+                    cout<<"You have entered an invalid volume flow rate value, try again\n";
+                    cin>>volumeFlowRate;
                 }
-                else{
-                    cout<<"Enter the viscosity of the fluid\n";
-                }
+                
+                //Accept the viscosity from the user
+                cout<<"Enter the viscosity of the fluid\n";
                 cin>>viscosity;
-                count++;
+                while(viscosity<=0){//repeat until the user gives a valid viscosity value
+                    cout<<"You have entered an invalid viscosity value, try again\n";
+                    cin>>viscosity;
+                }
+                
+                cout<<"You have entered all the parameters needed to calculate the pressure drop\n";
+                break;
             }
-            count=0;
-            
-            cout<<"You have entered all the parameters needed to calculate the pressure drop\n";
-            flag++;
-        }
+             flag++; //increment the flag by one which confirms the user already selected 1
+            }
+        
         
         //the block that runs when the user enters character 2
         else if(option=='2'){
-            if(flag==0){
+            if(flag==0){//check if the user did not select option 1 before selecting option 2
                 cout<<"You have not entered the values to calculate the pressure drop, go back to option 1 and make sure you enter all the values needed\n";
             }
-            else{
-                velocity = (4 * volumeFlowRate) / (PI * pow(diameter, 2));//calculate the velocity
-                reynoldsNumber = (density * velocity * diameter) / viscosity;//calculate the reynolds number
-                if(reynoldsNumber>2000){//check if the flow is laminar
-                    cout<<"The reynold's number is greater than 2000, which means the flow of the fluid is turbulant and this program only calculates for the laminar flow\n";
-                }
-                else{
-                    cout<<"Enter the file name you want to write the values in\n";//prompt the user to enter the file name
-                    cin>>writeFile;//get the file name from the user
-                    frictionFactor=8/reynoldsNumber;
-                    energyLoss=(4*frictionFactor*pow(velocity, 2)*length)/diameter;
-                    pressureDrop=density * (GRAVITY * heightDifference + energyLoss);
-                    ofstream wFile(writeFile, ios::out);//create the output file stream and open the file
-                    if(wFile.fail()){//check if the file is opened
-                        cout<<"File could not be opend\n";
-                        exit(-1);
+            else {
+                char answer;
+                while(true){
+                    if(flag>1){//check if the user already written the values in a file
+                        cout<<"You have already entered all the values and written in "<<writeFile<<". do you want to write the same in another file again? click n for no and any other key for yes\n";
+                        cin>>answer;
+                        if(answer=='n')
+                            break;
                     }
-                    //write the intermediate and the final pressure drop value in the file
-                    wFile<<"Pipe parameters info:\n";
-                    wFile<<"\tPressure point 1 height (height1): "<<height1<<endl;
-                    wFile<<"\tPressure point 2 height (height2): "<<height2<<endl;
-                    wFile<<"\tPipe diameter (diameter): "<<diameter<<endl;
-                    wFile<<"\tPipe length (length): "<<length<<endl;
-                    wFile<<"\tVolume flow rate (volumeFlowRate): "<<volumeFlowRate<<endl;
-                    wFile<<"Fluid Parameters info:\n";
-                    wFile<<"\tFluid velocity (velocity): "<<velocity<<endl;
-                    wFile<<"\tFluid density (density): "<<density<<endl;
-                    wFile<<"\tFluid viscosity (viscosity): "<<viscosity<<endl;
-                    wFile<<"\n";
-                    wFile<<"\t(Intermediate Parameters)\n";
-                    wFile<<"\tReynold's number (reynoldsnumber): "<<reynoldsNumber<<endl;
-                    wFile<<"\tFriction loss per kilogram (energyLoss): "<<frictionFactor<<endl;
-                    wFile<<"Pressure drop between point 1 and 2: "<<pressureDrop<<endl;
-                    cout<<"The intermediate values and the final pressure drop has been successfully written in the file\n";
-                    wFile.close();
+                        velocity = (4 * volumeFlowRate) / (PI * pow(diameter, 2));//calculate the velocity
+                        reynoldsNumber = (density * velocity * diameter) / viscosity;//calculate the reynolds number
+                        if(reynoldsNumber>2000){//check if the flow is laminar
+                            cout<<"The reynold's number is greater than 2000, which means the flow of the fluid is turbulant and this program only calculates for the laminar flow\n";
+                        }
+                        else{
+                            cout<<"Enter the file name you want to write the values in including the file extention\n";//prompt the user to enter the file name
+                            cin>>writeFile;//get the file name from the user
+                            frictionFactor=8/reynoldsNumber;
+                            energyLoss=(4*frictionFactor*pow(velocity, 2)*length)/diameter;
+                            pressureDrop=density * (GRAVITY * heightDifference + energyLoss);
+                            ofstream wFile(writeFile, ios::app);//create the output file stream and open the file
+                            if(wFile.fail()){//check if the file is opened
+                                cout<<writeFile<<" could not be opend\n";
+                                exit(-1);
+                            }
+                            //write the intermediate and the final pressure drop value in the file
+                            wFile<<"Pipe parameters info:\n";
+                            wFile<<"\tPressure point 1 height (height1): "<<height1<<endl;
+                            wFile<<"\tPressure point 2 height (height2): "<<height2<<endl;
+                            wFile<<"\tPipe diameter (diameter): "<<diameter<<endl;
+                            wFile<<"\tPipe length (length): "<<length<<endl;
+                            wFile<<"\tVolume flow rate (volumeFlowRate): "<<volumeFlowRate<<endl;
+                            wFile<<"Fluid Parameters info:\n";
+                            wFile<<"\tFluid velocity (velocity): "<<velocity<<endl;
+                            wFile<<"\tFluid density (density): "<<density<<endl;
+                            wFile<<"\tFluid viscosity (viscosity): "<<viscosity<<endl;
+                            wFile<<"\n";
+                            wFile<<"\t(Intermediate Parameters)\n";
+                            wFile<<"\tReynold's number (reynoldsnumber): "<<reynoldsNumber<<endl;
+                            wFile<<"\tFriction factor (frictionFactor):"<<frictionFactor<<endl;
+                            wFile<<"\tEnergy loss per kilogram (energyLoss): "<<frictionFactor<<endl;
+                            wFile<<"Pressure drop between point 1 and 2: "<<pressureDrop;
+                            wFile<<"\n";
+                            wFile<<"\n";
+                            cout<<"The intermediate values and the final pressure drop has been successfully written in "<<writeFile<<endl;
+                            wFile.close();
+                            cout<<"The calculated pressure difference is: "<<pressureDrop<<endl;
+                            break;
+                    }
                 }
             }
-        }
-            
-            //the block that runs when the user enters character 3
-        else if(option=='3'){
-                if(flag==0){
-                    cout<<"You have not written in the file to read from, go to option 2 and make sure you write the values in the file\n";
+                    flag++;//increment the flag by one which confirms the user has written the values in a file
                 }
-                else{
-                    ifstream rFile;
+            
+        //the block that runs when the user enters character 3
+        else if(option=='3'){
+                 
+                    ifstream rFile;//create an input file stream
                     while(true){
-                        cout<<"Enter the file name you want to read from\n";//prompt the user to enter the file name
+                        cout<<"Enter the file name you want to read from including the file extention\n";//prompt the user to enter the file name
                         cin>>readFile;//get the file name
-                        rFile.open(readFile, ios::in);//create the output file stream and open it
-                        if(rFile.fail()){//check if the file is opened
-                            string answer;
-                            cout<<"There no file by the file name you provided\n";
+                        rFile.open(readFile, ios::in);//open the file
+                        if(rFile.fail()){//check if the file is not opened
+                            char answer;
+                            cout<<readFile<<" does not exist\n";
                             cout<<"You want to try again? n for no and any other key for yes\n";
                             cin>>answer;
-                            if(answer=="n"){
+                            if(answer=='n'){
                                 break;
                             }
                         }
@@ -201,14 +196,15 @@ int main() {
                     }
                     rFile.close();
                 }
-                }
                 
             //the block that runs when the users character enters 4
         else if(option=='4'){
-                cout<<"You have chose to exit the software\n";
+                //confirms the user that the program is terminated
+                cout<<"You have chosen to exit the software\n";
+                cout<<"Thank you !\n";
                 break;//exit the loop
             }
-    
         }
     }
+
 
