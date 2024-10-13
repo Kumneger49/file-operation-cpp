@@ -1,14 +1,13 @@
-/*
+ /*
  This is a program that calculates the drop
  of an incompressible fluid that is in a laminar flow
  click the run button to run and use it.
  */
 
 //include essential libraries
-#include <iostream>
-#include <fstream>
-#include <math.h>
-#include <string>
+#include <iostream>//required for cout, cin, and endl functions
+#include <fstream>//required for file operation
+#include <math.h>//required for pow function
 #define GRAVITY 10.0
 #define PI 3.14
 using namespace std;
@@ -18,6 +17,8 @@ int main() {
     diameter(0), volumeFlowRate(0), viscosity(0), reynoldsNumber, frictionFactor,
     velocity, energyLoss, pressureDrop(0);
     char option('0'), fileLine;
+    
+    //variables to read the file name from the user
     string writeFile, readFile;
     
     //a variable to track the actions of the user
@@ -162,11 +163,11 @@ int main() {
                             cout<<"The intermediate values and the final pressure drop has been successfully written in "<<writeFile<<endl;
                             wFile.close();
                             cout<<"The calculated pressure difference is: "<<pressureDrop<<endl;
+                            flag++;//increment the flag by one which confirms the user has written the values in a file
                             break;
                     }
                 }
             }
-                    flag++;//increment the flag by one which confirms the user has written the values in a file
                 }
             
         //the block that runs when the user enters character 3
@@ -197,13 +198,18 @@ int main() {
                     rFile.close();
                 }
                 
-            //the block that runs when the users character enters 4
+            //the block that runs when the user enters character 4
         else if(option=='4'){
                 //confirms the user that the program is terminated
                 cout<<"You have chosen to exit the software\n";
                 cout<<"Thank you !\n";
                 break;//exit the loop
             }
+        
+        //the block that runs when the user enters any character other than 1, 2, 3, 4
+        else{
+            cout<<"Invalid input, make sure you select 1 to 4\n";
+        }
         }
     }
 
